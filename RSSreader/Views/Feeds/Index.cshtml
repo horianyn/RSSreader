@@ -1,0 +1,64 @@
+﻿@model IEnumerable<RSSreader.ViewModels.FeedViewModel>
+
+@{
+    ViewBag.Title = "RSS Feeds";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>RSS Feeds</h2>
+<p></p>
+
+@Html.ActionLink("Add Feed", "Create", "Feeds", new { @class = "btn btn-primary", role = "button" })
+
+<p></p>
+
+@using (Html.BeginForm("Index", "Feeds"))
+{
+    <p>
+        @if (TempData["searchString"] != null)
+        {
+            <input type="text" name="SearchString" value="@TempData["searchString"].ToString()" />
+        }
+        else
+        {
+            <input type="text" name="SearchString" />
+        }
+        <input type="submit" value="Search by Name" />
+    </p>
+}
+
+<p></p>
+<table class="table" id="main-table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Link)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var feed in Model)
+    {
+        <tr>
+            <td>
+                <strong>
+                    @Html.ActionLink(feed.Name, "Index", "Articles", new { id = feed.Id }, new { title = "Description: " + feed.Link })
+                </strong>
+                <br />
+                @Html.Raw(feed.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => feed.Link)
+            </td>
+            <td style="width:160px">
+                    @Html.ActionLink("Details", "Details", "Feeds", new { id = feed.Id }, new { @class = "btn btn-primary" })
+                    @Html.ActionLink("Delete", "Delete", "Feeds", new { id = feed.Id }, new { @class = "btn btn-primary" })
+            </td>
+        </tr>
+    }
+
+</table>
+
+

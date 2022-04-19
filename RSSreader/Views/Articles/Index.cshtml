@@ -1,0 +1,55 @@
+﻿@model IEnumerable<RSSreader.Models.Article>
+
+@{
+    ViewBag.Title = "View";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@if (TempData["id"] != null && !TempData["id"].Equals(0))
+{
+    <h2>Articles of feed: "@TempData["feed"]"</h2>
+    @Html.ActionLink("Reload Articles", "Reload", "Feeds", new { id = TempData["id"] }, new { @class = "btn btn-primary" })
+}
+else
+{
+    <h2>All Artices</h2>
+}
+<p></p>
+
+@using (Html.BeginForm("Index", "Articles", FormMethod.Get))
+{
+    <p>
+        Begin Date: <input type="date" name="fromDate" value=@TempData["fromDate"] />
+        End Date: <input type="date" name="toDate" value=@TempData["toDate"] />
+        @Html.Hidden("id")
+        <input type="submit" value="Filter" />
+
+    </p>
+}
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Title)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PublishDate)
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                <strong>
+                    <a href=@item.Link target="_blank" title=@item.Link>@item.Title</a>
+                </strong>
+                <br/>
+                @Html.Raw(item.Description )
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PublishDate)
+            </td>
+        </tr>
+    }
+
+</table>

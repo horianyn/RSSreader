@@ -1,0 +1,15 @@
+﻿@model RSSreader.Models.Feed
+@{
+    ViewBag.Title = "Delete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using(Html.BeginForm("Delete", "Feeds", FormMethod.Post))
+{
+    <h2>Are you sure to delete feed @Model.Name?</h2>
+    <input type="submit" name="yes" value="Yes" />
+    <input type="submit" name="no" value="No" /> 
+    @Html.AntiForgeryToken()
+}
+
+
